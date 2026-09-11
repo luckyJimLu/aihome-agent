@@ -7,13 +7,6 @@ Update shared aihome-agent Skills.
 
 Usage:
   update-skills.sh --profile <name> [--project <dir>] [--ref <ref>] [--force] [--check]
-
-Options:
-  --profile <name>   Project profile to resync
-  --project <dir>    Project directory, default is current directory
-  --ref <ref>        Branch, tag, or commit; default is origin/main
-  --force             Replace existing project-local Skill copies
-  --check             Show pending changes without syncing
 EOF
 }
 
@@ -42,26 +35,16 @@ PROJECT_DIR="$(cd "$PROJECT_DIR" && pwd)"
 AGENT_DIR="$PROJECT_DIR/.aihome/agent"
 SYNC_SCRIPT="$AGENT_DIR/scripts/sync-project.sh"
 
-[[ -d "$AGENT_DIR" ]] || {
-  echo "ERROR: shared repository is not connected at $AGENT_DIR" >&2
-  echo "Run the sync script once before updating." >&2
-  exit 1
-}
-[[ -f "$SYNC_SCRIPT" ]] || {
-  echo "ERROR: sync-project.sh not found in $AGENT_DIR" >&2
+[[ -d "$AGENT_DIR" && -f "$SYNC_SCRIPT" ]] || {
+  echo "ERROR: aihome-agent is not connected at $AGENT_DIR" >&2
   exit 1
 }
 
 before="$(git -C "$AGENT_DIR" rev-parse HEAD)"
 git -C "$AGENT_DIR" fetch --tags origin
-
-if [[ "$REF" == origin/* ]]; then
-  git -C "$AGENT_DIR" checkout --detach "$REF" >/dev/null
-else
-  git -C "$AGENT_DIR" checkout --detach "$REF" >/dev/null
-fi
-
+git -C "$AGENT_DIR" checkout --detach "$REF" >/dev/null
 after="$(git -C "$AGENT_DIR" rev-parse HEAD)"
+
 echo "aihome-agent: $before -> $after"
 
 if [[ "$CHECK" == "true" ]]; then
@@ -74,7 +57,9 @@ if [[ "$CHECK" == "true" ]]; then
   exit 0
 fi
 
-"$SYNC_SCRIPT" sync --profile "$PROFILE" --project "$PROJECT_DIR" --ref "$after" $([[ "$FORCE" == "true" ]] && echo "--force")
+ARGS=(--profile "$PROFILE" --project "$PROJECT_DIR" --ref "$after")
+[[ "$FORCE" == "true" ]] && ARGS+=(--force)
+"$SYNC_SCRIPT" "${ARGS[@]}"
 
 echo "Updated and synchronized profile: $PROFILE"
-echo "Review changes, then commit the submodule and synced Skills."
+echo "Review changes, then commit .aihome and .agents."
