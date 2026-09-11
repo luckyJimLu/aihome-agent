@@ -1,0 +1,8 @@
+id: embedded
+repository: luckyJimLu/ril
+skills:
+  - cpp-review
+  - liteos-review
+  - modem-at-analysis
+  - ril-state-machine
+  - pcap-debug
