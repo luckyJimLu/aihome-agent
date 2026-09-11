@@ -1,0 +1,12 @@
+id: llmfreeway
+repository: luckyJimLu/LLMFreeway
+skills:
+  - runtime-contract-validation
+  - provider-discovery
+  - github-actions-control-plane
+  - control-plane-contracts
+  - cloudflare-ai-gateway
+  - frontend-design
+policy:
+  free_only_contract_is_business_owned: true
+  secrets_stay_in_business_repo: true
