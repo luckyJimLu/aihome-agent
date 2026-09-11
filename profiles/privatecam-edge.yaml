@@ -1,0 +1,10 @@
+id: privatecam-edge
+repository: luckyJimLu/privatecam-edge
+skills:
+  - rtsp-vlc
+  - docker-qnap
+  - cloudflare-private-access
+  - security-review
+policy:
+  public_origin_ip_exposure: false
+  browser_access: false
