@@ -1,0 +1,12 @@
+id: trading
+repository: luckyJimLu/MyTradeSystem
+skills:
+  - price-action-brooks
+  - backtest-typescript
+  - atr-position-sizing
+  - risk-control
+  - tradingview-validation
+policy:
+  max_loss_per_trade: 0.03
+  no_live_execution_from_agent: true
+  no_pyramiding: true
