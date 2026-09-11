@@ -5,6 +5,7 @@ shared:
   - github-actions-control-plane
   - control-plane-contracts
   - security-review
+  - agent-skill-migration
 domains:
   gateway: [provider-discovery, cloudflare-ai-gateway]
   browser: [browser-automation, websocket-multi-tab]
