@@ -1,0 +1,13 @@
+version: 1
+project: aihome-agent
+sync:
+  mode: pinned
+  remote_hooks: false
+  automatic_recall: false
+  auto_update: false
+resources:
+  skills: skills
+  agents: agents
+  rules: rules
+  mcp: mcp
+  profiles: profiles
