@@ -1,146 +1,63 @@
 version: 1
-status: pending-approval
+status: approved-skills-only
 repository: luckyJimLu/aihome-agent
 generated_for: current-project-set
 
 approval:
   required_before_publish: true
-  requested_scope: null
-  approved_at: null
+  requested_scope: skills-only
+  approved_at: 2026-09-11
+  excluded: agents
+  note: "仅同步 Skills；不得创建、迁移或覆盖任何 Agent"
 
-score_formula:
-  direct_value: 1-5
-  cross_project_reuse: 1-5
-  maturity: 1-5
-  duplication: 1-5
-  safety: 1-5
-  migration_cost: 1-5
-  total: "direct_value + cross_project_reuse + maturity + safety + migration_cost + (6 - duplication)"
-
-candidates:
+approved_skills:
   - id: shared-runtime-contract-validation
-    kind: skill
     source: luckyJimLu/LLMFreeway
     target: skills/shared/runtime-contract-validation
     projects: [LLMFreeway, proxy-subscription-hub, HomeAI, hometutor]
-    decision: P0
     score: 27
     action: merge-and-promote
-    risk: contract drift if schemas are copied without version checks
-
   - id: shared-test-engineering
-    kind: skill
     source: luckyJimLu/LLMFreeway
     target: skills/shared/test-engineering
     projects: [LLMFreeway, proxy-subscription-hub, HomeAI, hometutor, MyTrade]
-    decision: P0
     score: 26
     action: deduplicate-and-promote
-    risk: generic rules may conflict with embedded or trading test constraints
-
   - id: shared-security-review
-    kind: skill
     source: luckyJimLu/LLMFreeway
     target: skills/shared/security-review
     projects: [LLMFreeway, proxy-subscription-hub, privatecam-edge, hometutor]
-    decision: P0
     score: 25
     action: merge-and-promote
-    risk: must keep child privacy, credentials and production boundary checks
-
   - id: shared-github-actions-control-plane
-    kind: skill
     source: luckyJimLu/LLMFreeway
     target: skills/shared/github-actions-control-plane
     projects: [LLMFreeway, proxy-subscription-hub, aihome-manifest, hometutor]
-    decision: P0
     score: 25
     action: merge-and-promote
-    risk: release permissions and deployment targets must remain explicit
-
   - id: shared-project-sync
-    kind: skill
     source: luckyJimLu/aihome-agent
     target: skills/shared/project-sync
     projects: [all connected repositories]
-    decision: P0
     score: 28
     action: keep-as-management-capability
-    risk: synchronization must never overwrite local changes without approval
 
-  - id: browser-runtime-agent
-    kind: agent
-    source: HomeAI / current browser architecture
-    target: agents/domain/browser-runtime
-    projects: [HomeAI, privatecam-edge]
-    decision: P1
-    score: 21
-    action: design-proposal-only
-    risk: browser automation, secrets, anti-bot boundaries and user-data isolation
+excluded:
+  agents:
+    - browser-runtime-agent
+    - tutor-classroom-agent
+    - trading-research-agent
+    - embedded-review-agent
+    - shared-dev-agent
+    - shared-qa-agent
+  skills:
+    - community-skills-normalization
+  reason: "Hold or requires normalization, license audit, deduplication, or separate confirmation"
 
-  - id: tutor-classroom-agent
-    kind: agent
-    source: hometutor-* / HomeAI roadmap
-    target: agents/domain/tutor-classroom
-    projects: [hometutor-core, hometutor-ai, hometutor-web, HomeAI]
-    decision: P1
-    score: 22
-    action: design-proposal-only
-    risk: child privacy, age-appropriate output, hallucination and auditability
-
-  - id: trading-research-agent
-    kind: agent
-    source: MyTrade / TradingAgents design
-    target: agents/domain/trading-research
-    projects: [MyTrade]
-    decision: P2
-    score: 16
-    action: keep-project-private
-    risk: financial loss, strategy leakage and accidental live-order execution
-
-  - id: embedded-review-agent
-    kind: agent
-    source: ril / STM32F103_Study / LiteOS work
-    target: agents/domain/embedded-review
-    projects: [ril, STM32F103_Study, utils]
-    decision: P1
-    score: 20
-    action: design-proposal-only
-    risk: hardware-specific assumptions and unsafe flash/device operations
-
-  - id: community-skills-normalization
-    kind: skill
-    source: luckyJimLu/aihome-skills
-    target: skills/community
-    projects: [all connected repositories]
-    decision: Hold
-    score: 15
-    action: normalize-before-review
-    risk: current migration contains duplicate community/community paths and requires source/license/duplication audit
-
-  - id: shared-dev-agent
-    kind: agent
-    source: cross-project workflow proposal
-    target: agents/shared/dev-agent
-    projects: [all connected repositories]
-    decision: P1
-    score: 22
-    action: design-proposal-only
-    risk: overly broad authority; must be read-only by default and require explicit write approval
-
-  - id: shared-qa-agent
-    kind: agent
-    source: cross-project workflow proposal
-    target: agents/shared/qa-agent
-    projects: [all connected repositories]
-    decision: P1
-    score: 23
-    action: design-proposal-only
-    risk: test commands and environments vary; no automatic production action
-
-normalization_tasks:
-  - fix skills/community/community duplicate prefix
-  - compare LLMFreeway and proxy-subscription-hub duplicate Skills
-  - preserve project-specific contracts and secrets boundaries
-  - add frontmatter, examples and validation for promoted entries
-  - create a change report before each publish
+required_checks:
+  - compare duplicate Skills across source repositories
+  - fix skills/community/community duplicate prefix before community import
+  - scan secrets and high-privilege commands
+  - preserve project-specific contracts and local extensions
+  - run structure and frontmatter validation
+  - create a sync report and rollback reference
