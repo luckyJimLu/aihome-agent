@@ -1,0 +1,21 @@
+name: validate-agent-catalog
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check required structure
+        run: |
+          test -f AGENTS.md
+          test -f teamai.yaml
+          test -f skills/catalog.yaml
+          test -d agents
+          test -d profiles
+          test -d rules
+      - name: Check secrets are not committed
+        run: |
+          ! grep -RInE '(sk-[A-Za-z0-9]{20,}|AIza[A-Za-z0-9_-]{20,}|-----BEGIN .* PRIVATE KEY-----)' . --exclude-dir=.git
