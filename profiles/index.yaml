@@ -1,0 +1,23 @@
+version: 1
+projects:
+  - id: llmfreeway
+    repository: luckyJimLu/LLMFreeway
+    domains: [gateway, provider, github-actions, frontend]
+  - id: proxy-subscription-hub
+    repository: luckyJimLu/proxy-subscription-hub
+    domains: [cloudflare, docker, networking, admin-ui]
+  - id: aihome
+    repository: luckyJimLu/HomeAI
+    domains: [browser, websocket, agent]
+  - id: privatecam-edge
+    repository: luckyJimLu/privatecam-edge
+    domains: [rtsp, qnap, cloudflare-security]
+  - id: utils
+    repository: luckyJimLu/utils
+    domains: [scripts, docker, cross-platform, github-actions]
+  - id: trading
+    repository: luckyJimLu/MyTradeSystem
+    domains: [price-action, backtest, risk-control]
+  - id: embedded
+    repository: luckyJimLu/ril
+    domains: [cpp, liteos, modem, ril, pcap]
