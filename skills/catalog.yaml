@@ -1,0 +1,14 @@
+version: 1
+shared:
+  - runtime-contract-validation
+  - test-engineering
+  - github-actions-control-plane
+  - control-plane-contracts
+  - security-review
+domains:
+  gateway: [provider-discovery, cloudflare-ai-gateway]
+  browser: [browser-automation, websocket-multi-tab]
+  tutor: [course-agent, document-grounding]
+  trading: [price-action-brooks, backtest-typescript, atr-position-sizing, risk-control]
+  embedded: [cpp-review, liteos-review, modem-at-analysis, ril-state-machine, pcap-debug]
+  operations: [cloudflare-deploy, docker-qnap, cross-platform-scripts]
